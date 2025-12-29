@@ -1,0 +1,73 @@
+﻿@page "/"
+@page "/dashboards/default"
+@using System.Data
+@using Almacen.Data;
+@inject IJSRuntime JSRuntime
+@inject BaseService BaseService
+
+
+<PageTitle>Counter</PageTitle>
+
+<EditForm Model="consultaModel">
+    <h1>Counter</h1>
+
+    <p role="status">Current count: @currentCount</p>
+
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+    <InputText @bind-Value="consultaModel.Cedula"></InputText>
+
+    <button class="btn btn-success" @onclick="Consulta">Consultar</button>
+
+    <p>Provincia: @provinciaValue</p>
+</EditForm>
+
+@code {
+    private int currentCount = 0;
+    private string provinciaValue = "";
+    private ConsultaModel consultaModel = new ConsultaModel();
+
+    private class ConsultaModel
+    {
+        public string Cedula { get; set; }
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task HandleUserConfirmation(bool confirmed)
+    {
+        if (confirmed)
+        {
+            await BaseService.ShowSweetAlert(AlertType.Success, message: "Confirmado.");
+        }
+        else
+        {
+            await BaseService.ShowSweetAlert(AlertType.Error, message: "No confirmado.");
+        }
+        BaseService.DisposeObjectReference(); // Asegurate de llamar esto después de terminar con el callback
+    }
+
+    private async Task Consulta()
+    {
+        try
+        {
+            BaseService.TblDet = BaseService.ObjConsulta.MostraDatos("sp_Consulta_activos", consultaModel.Cedula).Tables[0];
+            if (BaseService.TblDet != null && BaseService.TblDet.Rows.Count > 0)
+            {
+                provinciaValue = BaseService.TblDet.Rows[0]["descripcion"].ToString();
+                await BaseService.ShowSweetAlert(AlertType.Confirm, title: "Confirmación", message: "¿Desea continuar?", callback: HandleUserConfirmation);
+            }
+            else
+            {
+                provinciaValue = "No se encontraron resultados";
+            }
+        }
+        catch (Exception ex)
+        {
+            provinciaValue = "Error: " + ex.Message;
+        }
+    }
+}

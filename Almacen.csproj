@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Modulos\**" />
+    <Content Remove="Modulos\**" />
+    <EmbeddedResource Remove="Modulos\**" />
+    <None Remove="Modulos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Dashboards\Bidding.razor" />
+    <Content Remove="Pages\Dashboards\CallCenter.razor" />
+    <Content Remove="Pages\Dashboards\Crypto.razor" />
+    <Content Remove="Pages\Dashboards\Delivery.razor" />
+    <Content Remove="Pages\Dashboards\ECommerce.razor" />
+    <Content Remove="Pages\Dashboards\FinancePerformance.razor" />
+    <Content Remove="Pages\Dashboards\Landing.razor" />
+    <Content Remove="Pages\Dashboards\Logistics.razor" />
+    <Content Remove="Pages\Dashboards\Marketing.razor" />
+    <Content Remove="Pages\Dashboards\OnlineCourses.razor" />
+    <Content Remove="Pages\Dashboards\Podcast.razor" />
+    <Content Remove="Pages\Dashboards\POSSystem.razor" />
+    <Content Remove="Pages\Dashboards\Projects.razor" />
+    <Content Remove="Pages\Dashboards\School.razor" />
+    <Content Remove="Pages\Dashboards\Social.razor" />
+    <Content Remove="Pages\Dashboards\StoreAnalytics.razor" />
+    <Content Remove="Pages\Dashboards\WebsiteAnalytics.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Modulos\Negocio\Negocio.csproj" />
+  </ItemGroup>
+
+</Project>

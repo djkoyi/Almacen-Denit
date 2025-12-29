@@ -1,0 +1,36 @@
+﻿@using Almacen.Pages.Error
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.DefaultDarkSidebar)">
+                <NotAuthorized>
+                    @{
+                        Task.Run(async () =>
+                        {
+                            await Task.Yield();
+                            RedirectToLogin();
+                        });
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Extraviado</PageTitle>
+            <LayoutView Layout="@typeof(Layout.SystemLayout)">
+                <PageNotFound></PageNotFound>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code {
+    private void RedirectToLogin()
+    {
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"/signin?returnUrl={returnUrl}");
+    }
+}
